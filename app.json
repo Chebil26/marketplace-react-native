@@ -5,6 +5,14 @@
       "bundler": "metro"
     },
     "name": "my-app",
-    "slug": "my-app"
+    "slug": "my-app",
+    "extra": {
+      "eas": {
+        "projectId": "d9418846-8bd5-4fec-80e7-0d32ae4cb803"
+      }
+    },
+    "android": {
+      "package": "com.zikal.myapp"
+    }
   }
 }
