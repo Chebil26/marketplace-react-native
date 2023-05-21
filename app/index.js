@@ -1,59 +1,63 @@
-import { useState } from "react";
-import { SafeAreaView, ScrollView, View, Text } from "react-native";
 import { Stack, useRouter } from "expo-router";
+import React, { useState, useEffect } from "react";
+import {
+  SafeAreaView,
+  ScrollView,
+  View,
+  Keyboard,
+  TouchableOpacity,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { COLORS, icons, images, SIZES } from "../constants";
-import { Popularjobs, ScreenHeaderBtn, Welcome } from "../components";
-import TopProducts from "../components/TopProducts";
+import { ScreenHeaderBtn } from "../components";
 import ProductList from "../components/ProductList";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import TopProducts from "../components/TopProducts";
+import PostList from "../components/PostsList";
+import FeaturedStores from "../components/FeaturedStores";
+import Header from "../components/Header";
+import { COLORS, icons, images, SIZES } from "../constants";
 
 const Home = () => {
-  const router = useRouter();
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const insets = useSafeAreaInsets();
 
-  //   const [searchTerm, setSearchTerm] = useState("");
-  const [isKeywordChanging, setIsKeywordChanging] = useState(false);
-  const handleKeywordChange = (newKeyword) => {
-    // Perform any checks or actions based on the new keyword value
-    setIsKeywordChanging(true);
-    // Additional logic...
-  };
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setIsKeyboardVisible(true);
+      }
+    );
 
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setIsKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
-      <Stack.Screen
-        options={{
-          headerStyle: { backgroundColor: COLORS.lightWhite },
-          headerShadowVisible: false,
-          headerLeft: () => (
-            <ScreenHeaderBtn iconUrl={icons.menu} dimension="60%" />
-          ),
-          headerRight: () => (
-            <ScreenHeaderBtn iconUrl={images.profile} dimension="100%" />
-          ),
-          headerTitle: "",
-        }}
-      />
-
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <Header />
         <View
           style={{
             flex: 1,
             padding: SIZES.medium,
+            paddingBottom: insets.bottom, // Adjust padding to accommodate safe area
           }}
         >
-          {/* <Welcome
-          // searchTerm={searchTerm}
-          // setSearchTerm={setSearchTerm}
-          // handleClick={() => {
-          //   if (searchTerm) {
-          //     router.push(`/search/${searchTerm}`);
-          //   }
-          // }}
-          /> */}
-          {/* <Popularjobs /> */}
-
-          <TopProducts />
+          {!isKeyboardVisible && <FeaturedStores />}
+          {!isKeyboardVisible && <TopProducts />}
           <ProductList />
         </View>
       </ScrollView>

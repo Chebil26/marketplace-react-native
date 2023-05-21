@@ -13,10 +13,9 @@ import useFetch from "../hook/useFetch";
 
 const TopProducts = () => {
   const router = useRouter();
-
   const { data, isLoading, error, refetch } = useFetch(
     `https://adeem-2se9.onrender.com/api/products/top`,
-    {} // Add any additional query parameters if needed
+    {}
   );
 
   const [topProducts, setTopProducts] = useState([]);
@@ -34,9 +33,7 @@ const TopProducts = () => {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.productContainer}
-            onPress={() => {
-              router.push(`/product-details/${item._id}`);
-            }}
+            onPress={() => router.push(`/product-details/${item._id}`)}
           >
             <Image
               source={{ uri: `https://adeem-2se9.onrender.com${item.image}` }}
@@ -63,32 +60,32 @@ const styles = StyleSheet.create({
   },
   productContainer: {
     marginRight: 16,
-    padding: 16,
+    padding: 8,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#ccc",
     alignItems: "center",
-    width: 160,
+    width: 120,
+    height: 200,
   },
   productImage: {
     width: 60,
     height: 90,
   },
   productName: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "bold",
     marginBottom: 8,
   },
   productAuthor: {
-    fontSize: 16,
+    fontSize: 13,
     color: "#555",
     marginBottom: 4,
   },
   productPrice: {
-    fontSize: 14,
+    fontSize: 10,
     color: "gray",
   },
-
   headerTitle: {
     fontSize: 20,
     padding: 6,

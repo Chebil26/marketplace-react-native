@@ -4,20 +4,20 @@ import { useSearchParams } from "expo-router";
 import { COLORS, FONT, SIZES } from "../../constants";
 import useFetch from "../../hook/useFetch";
 
-const ProductDetails = () => {
+const StoreDetails = () => {
   const params = useSearchParams();
   const id = params.id;
-  const [product, setProduct] = useState(null);
+  const [store, setStore] = useState(null);
   //   const [isLoading, setIsLoading] = useState(true);
 
   const { data, isLoading, error, refetch } = useFetch(
-    `https://adeem-2se9.onrender.com/api/products/${id}`,
+    `https://adeem-2se9.onrender.com/api/stores/${id}`,
     {} // Add any additional query parameters if needed
   );
 
   useEffect(() => {
     if (data) {
-      setProduct(data);
+      setStore(data);
     }
   }, [data]);
 
@@ -33,7 +33,7 @@ const ProductDetails = () => {
     return <View style={styles.container}>{error}</View>;
   }
 
-  if (!product) {
+  if (!store) {
     return (
       <View style={styles.container}>
         <Text>Error: Failed to load product details</Text>
@@ -44,21 +44,19 @@ const ProductDetails = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: `https://adeem-2se9.onrender.com${product.image}` }}
+        source={{ uri: `https://adeem-2se9.onrender.com${store.image}` }}
         style={styles.productImage}
       />
       <View style={styles.detailsContainer}>
-        <Text style={styles.productName}>{product.name}</Text>
-        <Text style={styles.productAuthor}>By {product.author}</Text>
-        <Text style={styles.productAuthor}>By {product.store}</Text>
-        <Text style={styles.productPrice}>Price: {product.price}DA</Text>
-        <Text style={styles.productAuthor}>{product.description}</Text>
+        <Text style={styles.productName}>{store.name}</Text>
+
+        <Text style={styles.productAuthor}>{store.description}</Text>
       </View>
     </View>
   );
 };
 
-export default ProductDetails;
+export default StoreDetails;
 
 const styles = StyleSheet.create({
   container: {

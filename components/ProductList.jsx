@@ -43,9 +43,6 @@ const YourComponent = () => {
 
     fetchData();
   }, [page, keyword]);
-  const handleKeywordChange = (keyword) => {
-    onKeywordChange(keyword);
-  };
 
   const handlePrevPage = () => {
     if (page > 1) {
@@ -74,6 +71,7 @@ const YourComponent = () => {
             value={keyword}
             onChangeText={setKeyword}
             placeholder="Search"
+            placeholderTextColor={COLORS.gray}
           />
         </View>
 
@@ -188,6 +186,7 @@ const styles = StyleSheet.create({
     height: "100%",
     paddingHorizontal: SIZES.medium,
   },
+
   searchBtn: {
     width: 50,
     height: "100%",

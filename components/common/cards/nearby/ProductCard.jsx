@@ -1,17 +1,22 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import styles from "./nearbyjobcard.style";
-import { checkImageURL } from "../../../../app/utils/utils";
+import styles from "./productcard.style";
+
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 const ProductCard = ({ product, handleNavigate }) => {
-  console.log(`https://adeem-2se9.onrender.com${product.image}`);
   return (
-    <TouchableOpacity style={styles.container} onPress={handleNavigate}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={handleNavigate}
+      key={`nearby-product-${product._id}`}
+    >
       <TouchableOpacity style={styles.logoContainer}>
         <Image
-          source={`https://adeem-2se9.onrender.com${product.image}`}
+          source={{
+            uri: `https://adeem-2se9.onrender.com${product.image}`,
+          }}
           resizeMode="contain"
-          style={styles.logoImage}
+          style={styles.logImage}
         />
       </TouchableOpacity>
 

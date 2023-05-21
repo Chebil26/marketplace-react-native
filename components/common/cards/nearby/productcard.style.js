@@ -15,16 +15,16 @@ const styles = StyleSheet.create({
     shadowColor: COLORS.white,
   },
   logoContainer: {
-    width: 50,
-    height: 50,
+    width: 46,
+    height: 70,
     backgroundColor: COLORS.white,
     borderRadius: SIZES.medium,
     justifyContent: "center",
     alignItems: "center",
   },
   logImage: {
-    width: "70%",
-    height: "70%",
+    width: "100%",
+    height: "100%",
   },
   textContainer: {
     flex: 1,
