@@ -1,32 +1,29 @@
+import { useSearchParams } from "expo-router";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
-  View,
+  ActivityIndicator,
   SafeAreaView,
   ScrollView,
-  Text,
-  Image,
-  ActivityIndicator,
   StyleSheet,
-  TouchableOpacity,
+  Text,
+  View,
 } from "react-native";
-import { useSearchParams } from "expo-router";
 import useFetch from "../../hook/useFetch";
-import { Rating } from "react-native-ratings";
 
-const ProductDetails = () => {
-  const placeholder = `https://adeem-2se9.onrender.com/images/book_placeholder.png`;
+const PostDetails = () => {
   const params = useSearchParams();
   const id = params.id;
-  const [product, setProduct] = useState(null);
+  const [post, setPost] = useState(null);
 
   const { data, isLoading, error, refetch } = useFetch(
-    `https://adeem-2se9.onrender.com/api/products/${id}`,
+    `https://adeem-2se9.onrender.com/api/blogs/posts/${id}`,
     {}
   );
 
   useEffect(() => {
     if (data) {
-      setProduct(data);
+      setPost(data);
     }
   }, [data]);
 
@@ -38,22 +35,18 @@ const ProductDetails = () => {
     );
   }
 
-  if (error || !product) {
+  if (error || !post) {
     return (
       <View style={styles.container}>
-        <Text style={styles.errorText}>
-          Error: Failed to load product details
-        </Text>
+        <Text style={styles.errorText}>Error: Failed to load post details</Text>
       </View>
     );
   }
 
-  const categories = product.category.split(", ");
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        <View style={styles.imageContainer}>
+        {/* <View style={styles.imageContainer}>
           <Image
             source={{
               uri: product.image
@@ -64,47 +57,22 @@ const ProductDetails = () => {
             }}
             style={styles.productImage}
           />
-        </View>
+        </View> */}
         <View style={styles.detailsContainer}>
-          <Text style={styles.productName}>{product.name}</Text>
-          <Text style={styles.productAuthor}>By {product.author}</Text>
-          <Text style={styles.storeName}>Store: {product.store}</Text>
-          <Text style={styles.productPrice}>Price: {product.price} DA</Text>
-          <View style={styles.categoryContainer}>
-            {categories.map((category, index) => (
-              <TouchableOpacity key={index} style={styles.categoryButton}>
-                <Text style={styles.categoryButtonText}>{category}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          <Text style={styles.productDescription}>{product.description}</Text>
-          <Text style={styles.productRating}>
-            Average Rating: {product.rating}
+          <Text style={styles.productName}>{post.title}</Text>
+          <Text style={styles.productAuthor}>By {post.store}</Text>
+          <Text style={styles.date}>
+            {moment(post.date_created).format("MMMM Do, YYYY")}
           </Text>
-          <View style={styles.reviewsContainer}>
-            {product.reviews.length === 0 ? (
-              <Text>No reviews available</Text>
-            ) : (
-              product.reviews.map((review) => (
-                <View key={review._id} style={styles.reviewContainer}>
-                  <Text style={styles.reviewName}>{review.name}</Text>
-                  <Rating
-                    imageSize={20}
-                    readonly
-                    startingValue={review.rating}
-                  />
-                  <Text style={styles.reviewComment}>{review.comment}</Text>
-                </View>
-              ))
-            )}
-          </View>
+
+          <Text style={styles.productDescription}>{post.content}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default ProductDetails;
+export default PostDetails;
 
 const styles = StyleSheet.create({
   container: {

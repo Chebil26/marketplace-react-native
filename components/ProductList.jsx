@@ -6,24 +6,41 @@ import {
   Button,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
+  ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
-
 import axios from "axios";
-import ProductCard from "./common/cards/nearby/ProductCard";
+import ProductCard from "./ProductCard";
 import { COLORS, FONT, SIZES } from "../constants";
-import search from "../assets/icons/search.png";
+import SearchBar from "./SearchBar";
 
-const YourComponent = () => {
+const ProductList = () => {
   const router = useRouter();
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [keyword, setKeyword] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const categories = [
+    "Fiction",
+    "Mystery",
+    "Non fiction",
+    "Science Fiction",
+    "Historical Fiction",
+    "Fantasy",
+    "Romance",
+    "Biography",
+    "Self Help",
+    "Classics",
+  ];
 
   const handleClick = () => {
     router.push(`/products`);
+  };
+
+  const filterHandler = (category) => {
+    setSelectedCategory(category.toLowerCase());
+    setKeyword(category.toLowerCase());
   };
 
   useEffect(() => {
@@ -56,6 +73,10 @@ const YourComponent = () => {
     }
   };
 
+  const handleSearch = () => {
+    setPage(1);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -64,26 +85,28 @@ const YourComponent = () => {
           <Text style={styles.headerBtn}>Show all</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchWrapper}>
-          <TextInput
-            style={styles.searchInput}
-            value={keyword}
-            onChangeText={setKeyword}
-            placeholder="Search"
-            placeholderTextColor={COLORS.gray}
-          />
-        </View>
-
-        <TouchableOpacity style={styles.searchBtn}>
-          <Image
-            source={search}
-            resizeMode="contain"
-            style={styles.searchBtnImage}
-          />
-        </TouchableOpacity>
+      <SearchBar
+        keyword={keyword}
+        setKeyword={setKeyword}
+        onSearch={handleSearch}
+      />
+      <View style={styles.categoriesContainer}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.categoriesScrollViewContent}
+        >
+          {categories.map((category, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[styles.categoryButton]}
+              onPress={() => filterHandler(category)}
+            >
+              <Text style={[styles.categoryButtonText]}>{category}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
-
       <View style={styles.cardsContainer}>
         {products?.map((product) => (
           <ProductCard
@@ -95,8 +118,6 @@ const YourComponent = () => {
           />
         ))}
       </View>
-
-      {/* Render pagination controls */}
       <View style={styles.paginationContainer}>
         <TouchableOpacity
           style={styles.paginationButton}
@@ -163,43 +184,26 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "black",
   },
-
-  searchContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    marginTop: SIZES.large,
-    height: 50,
+  categoriesContainer: {
+    marginTop: 10,
+    marginBottom: 2,
   },
-  searchWrapper: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    marginRight: SIZES.small,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: SIZES.medium,
-    height: "100%",
+  categoriesScrollViewContent: {
+    paddingLeft: 20,
   },
-  searchInput: {
-    fontFamily: FONT.regular,
-    width: "100%",
-    height: "100%",
-    paddingHorizontal: SIZES.medium,
+  categoryButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 5,
+    marginRight: 10,
+    backgroundColor: "#ECFFED",
+    borderWidth: 0.5,
+    borderColor: "#82F586",
   },
-
-  searchBtn: {
-    width: 50,
-    height: "100%",
-    backgroundColor: "#18bc9c",
-    borderRadius: SIZES.medium,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  searchBtnImage: {
-    width: "50%",
-    height: "50%",
-    tintColor: COLORS.white,
+  categoryButtonText: {
+    fontSize: 14,
+    color: "#0E6C03",
   },
 });
 
-export default YourComponent;
+export default ProductList;

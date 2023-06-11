@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import useFetch from "../hook/useFetch";
 import { useRouter } from "expo-router";
+import moment from "moment";
 
 const PostList = () => {
   const router = useRouter();
@@ -17,8 +18,8 @@ const PostList = () => {
     "https://adeem-2se9.onrender.com/api/blogs/posts"
   );
 
-  const handleClick = () => {
-    router.push(`/posts`);
+  const handleClick = (postId) => {
+    router.push(`/post-details/${postId}`);
   };
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const PostList = () => {
         {posts.map((post) => (
           <TouchableOpacity
             key={post.id}
-            onPress={() => router.push(`/post-details/${post.id}`)}
+            onPress={() => handleClick(post.id)}
             style={styles.storeItem}
           >
             <Image
@@ -48,6 +49,9 @@ const PostList = () => {
             />
             <Text style={styles.storeName}>{post.title}</Text>
             <Text style={styles.storeWilaya}>By {post.store}</Text>
+            <Text style={styles.date}>
+              {moment(post.date_created).format("MMMM Do, YYYY")}
+            </Text>
             <Text style={styles.storeWilaya}>{post.content}</Text>
           </TouchableOpacity>
         ))}
@@ -90,11 +94,13 @@ const styles = StyleSheet.create({
   storeWilaya: {
     color: "#888",
   },
-
+  date: {
+    color: "#888",
+    marginTop: 4,
+  },
   showAllButton: {
     marginLeft: "auto",
   },
-
   headerBtn: {
     fontSize: 16,
     fontWeight: "bold",

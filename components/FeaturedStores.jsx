@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   storeImage: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 150,
     borderRadius: 8,
   },
   storeName: {

@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
-  FlatList,
+  ScrollView,
   StyleSheet,
   Text,
   Image,
   TouchableOpacity,
 } from "react-native";
+import { MaterialCommunityIcons } from "react-native-vector-icons";
+import ProductCard from "./ProductCard";
 import { useRouter } from "expo-router";
 import axios from "axios";
 import useFetch from "../hook/useFetch";
@@ -25,29 +27,42 @@ const TopProducts = () => {
     }
   }, [data]);
 
+  const handleNavigate = (productId) => {
+    router.push(`/product-details/${productId}`);
+  };
+
+  const scrollViewRef = useRef(null);
+
+  const handleScrollRight = () => {
+    scrollViewRef.current.scrollTo({ x: 120, animated: true });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.headerTitle}>Most Popular Books</Text>
-      <FlatList
-        data={topProducts}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.productContainer}
-            onPress={() => router.push(`/product-details/${item._id}`)}
-          >
-            <Image
-              source={{ uri: `https://adeem-2se9.onrender.com${item.image}` }}
-              style={styles.productImage}
+
+      <View style={styles.productsContainer}>
+        <ScrollView
+          ref={scrollViewRef}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
+          {topProducts.map((item) => (
+            <ProductCard
+              product={item}
+              key={`nearby-product-${item._id}`}
+              handleNavigate={() => router.push(`/product-details/${item._id}`)}
             />
-            <Text style={styles.productName}>{item.name}</Text>
-            <Text style={styles.productAuthor}>By {item.author}</Text>
-            <Text style={styles.productAuthor}> {item.store}</Text>
-            <Text style={styles.productPrice}>Price: {item.price}DA</Text>
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item._id.toString()}
-        horizontal
-      />
+          ))}
+        </ScrollView>
+
+        <TouchableOpacity
+          style={styles.scrollIndicator}
+          onPress={handleScrollRight}
+        >
+          <MaterialCommunityIcons name="chevron-right" size={24} color="#555" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -57,6 +72,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 8,
     backgroundColor: "#fff",
+  },
+  productsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   productContainer: {
     marginRight: 16,
@@ -92,6 +111,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#18bc9c",
     alignSelf: "center",
+  },
+  scrollIndicator: {
+    marginLeft: 10,
   },
 });
 
