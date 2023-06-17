@@ -53,7 +53,7 @@ const FeaturedStores = () => {
         ))}
       </ScrollView>
       <TouchableOpacity onPress={handleClick} style={styles.showAllButton}>
-        <Text style={styles.headerBtn}>Show all</Text>
+        <Text style={styles.headerBtn}>More</Text>
       </TouchableOpacity>
     </View>
   );
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   heading: {
-    color: "#18bc9c",
+    color: "#7BB44D",
     fontWeight: "bold",
     marginBottom: 8,
     textAlign: "center",
@@ -79,16 +79,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   storeImage: {
-    width: 200,
+    width: 180,
     height: 150,
     borderRadius: 8,
   },
   storeName: {
     marginTop: 8,
     fontWeight: "bold",
+    color: "#185b89",
   },
   storeWilaya: {
-    color: "#888",
+    color: "#185b89",
   },
 
   showAllButton: {

@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  Image,
-  Button,
-  StyleSheet,
   TouchableOpacity,
+  StyleSheet,
   ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
@@ -51,7 +49,6 @@ const ProductList = () => {
         );
         const { products, page: responsePage, pages } = response.data;
         setProducts(products);
-        setPage(page);
         setPages(pages);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -73,14 +70,61 @@ const ProductList = () => {
     }
   };
 
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
   const handleSearch = () => {
     setPage(1);
+  };
+
+  const renderPageButtons = () => {
+    const firstPage = 1;
+    const lastPage = pages;
+
+    return (
+      <>
+        <TouchableOpacity
+          style={[
+            styles.paginationButton,
+            page === firstPage && styles.activePaginationButton,
+          ]}
+          onPress={() => handlePageChange(firstPage)}
+        >
+          <Text
+            style={[
+              styles.paginationButtonText,
+              page === firstPage && styles.activePaginationButtonText,
+            ]}
+          >
+            {firstPage}
+          </Text>
+        </TouchableOpacity>
+        {page > 1 && <Text style={styles.pageText}>{page - 1}</Text>}
+        <TouchableOpacity
+          style={[
+            styles.paginationButton,
+            page === lastPage && styles.activePaginationButton,
+          ]}
+          onPress={() => handlePageChange(lastPage)}
+        >
+          <Text
+            style={[
+              styles.paginationButtonText,
+              page === lastPage && styles.activePaginationButtonText,
+            ]}
+          >
+            {lastPage}
+          </Text>
+        </TouchableOpacity>
+      </>
+    );
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Books</Text>
+        <Text style={styles.headerTitle}>All Books</Text>
         <TouchableOpacity onPress={handleClick}>
           <Text style={styles.headerBtn}>Show all</Text>
         </TouchableOpacity>
@@ -120,19 +164,25 @@ const ProductList = () => {
       </View>
       <View style={styles.paginationContainer}>
         <TouchableOpacity
-          style={styles.paginationButton}
+          style={[
+            styles.paginationButton,
+            page === 1 && styles.disabledPaginationButton,
+          ]}
           onPress={handlePrevPage}
           disabled={page === 1}
         >
           <Text style={styles.paginationButtonText}>{"<"}</Text>
         </TouchableOpacity>
-        <Text style={styles.pageText}>{page}</Text>
+        {renderPageButtons()}
         <TouchableOpacity
-          style={styles.paginationButton}
+          style={[
+            styles.paginationButton,
+            page === pages && styles.disabledPaginationButton,
+          ]}
           onPress={handleNextPage}
           disabled={page === pages}
         >
-          <Text style={styles.paginationButtonText}> {">"} </Text>
+          <Text style={styles.paginationButtonText}>{">"}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -152,7 +202,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#18bc9c",
+    color: "#7BB44D",
   },
   headerBtn: {
     fontSize: 16,
@@ -173,16 +223,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 5,
-    marginHorizontal: 10,
+    marginHorizontal: 5,
+  },
+  activePaginationButton: {
+    backgroundColor: "#2ecc71",
+  },
+  disabledPaginationButton: {
+    backgroundColor: "gray",
   },
   paginationButtonText: {
     color: "white",
     fontWeight: "bold",
   },
-  pageText: {
-    fontSize: 18,
-    fontWeight: "bold",
+  activePaginationButtonText: {
     color: "black",
+  },
+  pageText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#18bc9c",
+    marginHorizontal: 5,
   },
   categoriesContainer: {
     marginTop: 10,

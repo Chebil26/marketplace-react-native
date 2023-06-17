@@ -1,4 +1,4 @@
-import { useSearchParams } from "expo-router";
+import { useRouter, useNavigation, useSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -11,12 +11,11 @@ import {
 } from "react-native";
 import useFetch from "../../hook/useFetch";
 import axios from "axios";
-import { useRouter } from "expo-router";
 import ProductCard from "../../components/ProductCard";
 import { COLORS } from "../../constants";
 const StoreDetails = () => {
   const router = useRouter();
-
+  const navigation = useNavigation();
   const params = useSearchParams();
   const id = params.id;
   const [store, setStore] = useState(null);
@@ -60,15 +59,13 @@ const StoreDetails = () => {
   useEffect(() => {
     if (data) {
       setStore(data);
+      navigation.setOptions({ headerTitle: data.name }); // Update the header title
     }
   }, [data]);
-  console.log(products);
 
   const storeProducts = products.filter(
     (product) => product.store === store.name
   );
-
-  console.log(storeProducts);
 
   if (isLoading) {
     return (

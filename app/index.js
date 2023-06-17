@@ -26,7 +26,19 @@ const Home = () => {
   const router = useRouter();
 
   useEffect(() => {
-    navigation.setOptions({ headerShown: false });
+    navigation.setOptions({
+      headerTitle: "Adeem",
+      headerShown: true,
+      headerStyle: {
+        backgroundColor: "#185b89",
+      },
+      headerTitleStyle: {
+        fontSize: 24,
+        color: COLORS.white,
+        fontWeight: "bold",
+      },
+    });
+
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       () => {
@@ -45,10 +57,10 @@ const Home = () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
-  }, []);
+  }, [navigation]);
 
   const handleSearchButtonPress = () => {
-    router.push("/products");
+    router.push("/books");
   };
 
   return (
@@ -58,33 +70,18 @@ const Home = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1 }}
         >
-          <View
-            style={{
-              height: 80,
-              backgroundColor: "#185b89",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 24,
-                color: COLORS.white,
-                fontWeight: "bold",
-              }}
-            >
-              Adeem
-            </Text>
-          </View>
           <TouchableOpacity
             style={styles.searchButton}
             onPress={handleSearchButtonPress}
           >
-            <Text style={styles.searchButtonText}>
-              Search for any book you want{" "}
-              <MaterialIcons name="search" size={28} color="#185b89" />
-            </Text>
+            <View style={styles.searchButtonContent}>
+              <Text style={styles.searchButtonText}>
+                Find any book in Algeria
+              </Text>
+              <MaterialIcons name="search" size={30} color="white" />
+            </View>
           </TouchableOpacity>
+
           <View
             style={{
               flex: 1,
@@ -106,17 +103,21 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   searchButton: {
-    backgroundColor: "#18bc9c",
+    backgroundColor: "#7BB44D",
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 5,
-    marginTop: SIZES.medium,
+    borderRadius: 1,
+    alignItems: "center",
+  },
+  searchButtonContent: {
+    flexDirection: "row",
     alignItems: "center",
   },
   searchButtonText: {
     color: COLORS.white,
     fontWeight: "bold",
     fontSize: 16,
+    marginRight: 5,
   },
 });
 

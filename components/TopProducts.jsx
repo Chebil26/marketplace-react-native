@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 6,
     fontWeight: "bold",
-    color: "#18bc9c",
+    color: "#7BB44D",
     alignSelf: "center",
   },
   scrollIndicator: {

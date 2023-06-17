@@ -1,4 +1,4 @@
-import { useSearchParams } from "expo-router";
+import { useSearchParams, useNavigation } from "expo-router";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
@@ -16,12 +16,15 @@ const PostDetails = () => {
   const id = params.id;
   const [post, setPost] = useState(null);
 
+  const navigation = useNavigation();
+
   const { data, isLoading, error, refetch } = useFetch(
     `https://adeem-2se9.onrender.com/api/blogs/posts/${id}`,
     {}
   );
 
   useEffect(() => {
+    navigation.setOptions({ headerTitle: "Article" });
     if (data) {
       setPost(data);
     }
@@ -46,18 +49,6 @@ const PostDetails = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-        {/* <View style={styles.imageContainer}>
-          <Image
-            source={{
-              uri: product.image
-                ? `https://adeem-2se9.onrender.com/${product.image}`
-                : product.defaultImage
-                ? product.defaultImage
-                : placeholder,
-            }}
-            style={styles.productImage}
-          />
-        </View> */}
         <View style={styles.detailsContainer}>
           <Text style={styles.productName}>{post.title}</Text>
           <Text style={styles.productAuthor}>By {post.store}</Text>

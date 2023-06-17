@@ -9,13 +9,14 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { useSearchParams } from "expo-router";
+import { useSearchParams, useNavigation } from "expo-router";
 import useFetch from "../../hook/useFetch";
 import { Rating } from "react-native-ratings";
 
 const ProductDetails = () => {
   const placeholder = `https://adeem-2se9.onrender.com/images/book_placeholder.png`;
   const params = useSearchParams();
+  const navigation = useNavigation();
   const id = params.id;
   const [product, setProduct] = useState(null);
 
@@ -27,6 +28,7 @@ const ProductDetails = () => {
   useEffect(() => {
     if (data) {
       setProduct(data);
+      navigation.setOptions({ headerTitle: data.name });
     }
   }, [data]);
 

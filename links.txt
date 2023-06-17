@@ -1,0 +1,1 @@
+https://expo.dev/@zikal/my-app?serviceType=classic&distribution=expo-go

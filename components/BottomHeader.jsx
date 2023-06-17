@@ -15,7 +15,7 @@ const BottomHeader = () => {
   };
 
   const handleProductsClick = () => {
-    router.push("/products");
+    router.push("/books");
   };
 
   const handlePostsClick = () => {
